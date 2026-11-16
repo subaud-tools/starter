@@ -1,46 +1,37 @@
-# kempt.toml: the subaud starter. Sets up a machine for the subaud suite with
-# Claude Code, and nothing else: tmux, Claude Code, and every suite tool with
-# its release setup (skills, Claude Code plugin, pi channel).
+# kempt.toml: the subaud starter. Sets up a machine for the subaud suite:
+# tmux, and every suite tool with its release setup (skills, Claude Code
+# plugin, pi channel).
 #
-#   curl -fsSL https://kempt.tools/install.sh | sh
-#   kempt init -profile suite https://github.com/subaud-tools/starter.git
+# https://subaud.tools/setup.sh runs it, from the line on the account page:
 #
-# kempt's installer signs the machine in to subaud.tools first; every download
-# below is gated on that sign-in. Then run `claude` and say
-# "Get me started with subaud."
+#   curl -fsSL https://subaud.tools/setup.sh | sh -s -- <key>
+#
+# setup.sh signs the machine in to subaud.tools (every download below is gated
+# on that sign-in), installs Homebrew on a Mac and tmux, and Claude Code when no
+# agent is there, then runs
+#   kempt init -yes -profile suite https://github.com/subaud-tools/starter.git
+# and opens the agent on "Get me started with subaud."
 
 [kempt]
 spec = 2
 
 # ---------------------------------------------------------------------------
-# core: tmux and Claude Code. Claude Code comes from Anthropic's documented
-# Homebrew cask on a Mac and its documented npm package on Linux (kempt runs
-# no install scripts, so the curl installer is not an option here).
+# core: tmux, and a check that an agent is here: Claude Code or pi. setup.sh
+# installs Claude Code with Anthropic's installer when neither is (kempt runs
+# no install scripts).
 # ---------------------------------------------------------------------------
 [packages.core]
-description = "tmux and Claude Code"
-notes = [
-  "On a Mac, tmux and Claude Code install with Homebrew (https://brew.sh); install it first if `brew` is missing.",
-  "On Linux, Claude Code installs from npm and needs Node.js 22 or later.",
-]
+description = "tmux, and an agent (Claude Code or pi)"
 
   [[packages.core.install]]
   brew.formulas = ["tmux"]
   apt = ["tmux"]
 
-  [[packages.core.install]]
-  brew.casks = ["claude-code"]
-  only = { os = "darwin" }
-
-  [[packages.core.install]]
-  npm = ["@anthropic-ai/claude-code"]
-  only = { os = "linux" }
-
   [[packages.core.verify]]
   command-exists = "tmux"
 
   [[packages.core.verify]]
-  command-exists = "claude"
+  command-exists-any = ["claude", "pi"]
 
 # ---------------------------------------------------------------------------
 # The suite. Each download is a family release from its own site; setup = true
@@ -188,5 +179,5 @@ needs = ["core"]
 
 # ---------------------------------------------------------------------------
 [profiles.suite]
-description = "tmux, Claude Code and the whole subaud suite"
+description = "tmux, an agent and the whole subaud suite"
 packages = ["core", "kempt", "muster", "galley", "tackle", "casebook", "muda", "diazo"]

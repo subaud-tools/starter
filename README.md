@@ -1,34 +1,36 @@
 # subaud starter
 
 A minimal [kempt](https://kempt.tools) config that sets up a machine for the
-[subaud](https://subaud.tools) suite with Claude Code: tmux, Claude Code, and
-every suite tool (muster, galley, kempt, tackle, casebook, muda, diazo) with
-the skills, Claude Code plugin and pi channel each release ships. Nothing
-else: no shell config, no editor, no personal settings.
+[subaud](https://subaud.tools) suite: tmux, and every suite tool (muster,
+galley, kempt, tackle, casebook, muda, diazo) with the skills, Claude Code
+plugin and pi channel each release ships. Nothing else: no shell config, no
+editor, no personal settings.
 
 ## Use it
 
-You need a subaud.tools account with the suite. In a terminal:
+You need a subaud.tools account with the suite. Your
+[account page](https://subaud.tools/account/) gives you one line to paste in a
+terminal on the machine:
 
 ```sh
-curl -fsSL https://kempt.tools/install.sh | sh
-kempt init -profile suite https://github.com/subaud-tools/starter.git
+curl -fsSL https://subaud.tools/setup.sh | sh -s -- <key>
 ```
 
-The first line signs this machine in and installs kempt: it prints a link
-(<https://subaud.tools/account/machine>) and a code, and waits while you open
-the link, type the code and allow the machine. The second installs everything below.
-Then run `claude` and say "Get me started with subaud."
+[setup.sh](https://subaud.tools/setup.sh) signs the machine in, installs
+Homebrew on a Mac and tmux, installs Claude Code when no agent (Claude Code or
+pi) is present, then runs
 
-On a Mac, tmux and Claude Code come from [Homebrew](https://brew.sh); install
-it first if `brew` is missing. On Linux, Claude Code comes from npm and needs
-Node.js 22 or later.
+```sh
+kempt init -yes -profile suite https://github.com/subaud-tools/starter.git
+```
+
+and opens your agent on "Get me started with subaud."
 
 ## What it installs
 
 | Package | What |
 |---|---|
-| `core` | tmux; Claude Code (Homebrew cask on a Mac, npm on Linux) |
+| `core` | tmux, and a check that Claude Code or pi is here |
 | `kempt` | kempt itself, so `kempt update` keeps it current |
 | `muster` | messages between agent sessions on this machine |
 | `galley` | review a document with your agent on a page |
