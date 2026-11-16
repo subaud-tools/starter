@@ -1,0 +1,192 @@
+# kempt.toml: the subaud starter. Sets up a machine for the subaud suite with
+# Claude Code, and nothing else: tmux, Claude Code, and every suite tool with
+# its release setup (skills, Claude Code plugin, pi channel).
+#
+#   curl -fsSL https://kempt.tools/install.sh | sh
+#   kempt init -profile suite https://github.com/subaud-tools/starter.git
+#
+# kempt's installer signs the machine in to subaud.tools first; every download
+# below is gated on that sign-in. Then run `claude` and say
+# "Get me started with subaud."
+
+[kempt]
+spec = 2
+
+# ---------------------------------------------------------------------------
+# core: tmux and Claude Code. Claude Code comes from Anthropic's documented
+# Homebrew cask on a Mac and its documented npm package on Linux (kempt runs
+# no install scripts, so the curl installer is not an option here).
+# ---------------------------------------------------------------------------
+[packages.core]
+description = "tmux and Claude Code"
+notes = [
+  "On a Mac, tmux and Claude Code install with Homebrew (https://brew.sh); install it first if `brew` is missing.",
+  "On Linux, Claude Code installs from npm and needs Node.js 22 or later.",
+]
+
+  [[packages.core.install]]
+  brew.formulas = ["tmux"]
+  apt = ["tmux"]
+
+  [[packages.core.install]]
+  brew.casks = ["claude-code"]
+  only = { os = "darwin" }
+
+  [[packages.core.install]]
+  npm = ["@anthropic-ai/claude-code"]
+  only = { os = "linux" }
+
+  [[packages.core.verify]]
+  command-exists = "tmux"
+
+  [[packages.core.verify]]
+  command-exists = "claude"
+
+# ---------------------------------------------------------------------------
+# The suite. Each download is a family release from its own site; setup = true
+# takes the setup the release publishes beside the binary.
+# ---------------------------------------------------------------------------
+[packages.kempt]
+description = "kempt: keeps this machine matching this file (kempt.tools)"
+
+  # kempt publishes no setup bundle; its installer already put it here, and
+  # this step keeps `kempt update` rolling it.
+  [[packages.kempt.download]]
+  site = "kempt.tools"
+  tool = "kempt"
+  bin = "kempt"
+
+  [[packages.kempt.verify]]
+  command-exists = "kempt"
+
+[packages.muster]
+description = "muster: messages between agent sessions on this machine (muster.tools)"
+needs = ["core"]
+
+  [[packages.muster.download]]
+  site = "muster.tools"
+  tool = "muster"
+  bin = "muster"
+  setup = true
+
+  [[packages.muster.verify]]
+  command-exists = "muster"
+
+[packages.galley]
+description = "galley: review a document with your agent on a page (galley.tools)"
+needs = ["core"]
+
+  [[packages.galley.download]]
+  site = "galley.tools"
+  tool = "galley"
+  bin = "galley"
+  setup = true
+
+  [[packages.galley.verify]]
+  command-exists = "galley"
+
+[packages.tackle]
+description = "tackle: proj, scratch, creel, sift, imprint and cull (tackle.tools)"
+needs = ["core"]
+
+  [[packages.tackle.download]]
+  site = "tackle.tools"
+  product = "tackle"
+  tool = "proj"
+  bin = "proj"
+  setup = true
+
+  [[packages.tackle.download]]
+  site = "tackle.tools"
+  product = "tackle"
+  tool = "scratch"
+  bin = "scratch"
+
+  [[packages.tackle.download]]
+  site = "tackle.tools"
+  product = "tackle"
+  tool = "creel"
+  bin = "creel"
+
+  [[packages.tackle.download]]
+  site = "tackle.tools"
+  product = "tackle"
+  tool = "sift"
+  bin = "sift"
+  setup = true
+
+  [[packages.tackle.download]]
+  site = "tackle.tools"
+  product = "tackle"
+  tool = "imprint"
+  bin = "imprint"
+  setup = true
+
+  [[packages.tackle.download]]
+  site = "tackle.tools"
+  product = "tackle"
+  tool = "cull"
+  bin = "cull"
+  setup = true
+
+  [[packages.tackle.verify]]
+  command-exists = "proj"
+
+  [[packages.tackle.verify]]
+  command-exists = "scratch"
+
+  [[packages.tackle.verify]]
+  command-exists = "creel"
+
+  [[packages.tackle.verify]]
+  command-exists = "sift"
+
+  [[packages.tackle.verify]]
+  command-exists = "imprint"
+
+  [[packages.tackle.verify]]
+  command-exists = "cull"
+
+[packages.casebook]
+description = "casebook: triage your repos, branches and PRs with your agent (casebook.tools)"
+needs = ["core"]
+
+  [[packages.casebook.download]]
+  site = "casebook.tools"
+  tool = "casebook"
+  bin = "casebook"
+  setup = true
+
+  [[packages.casebook.verify]]
+  command-exists = "casebook"
+
+[packages.muda]
+description = "muda: find and fix delivery waste in your pipelines (muda.tools)"
+needs = ["core"]
+
+  [[packages.muda.download]]
+  site = "muda.tools"
+  tool = "muda"
+  bin = "muda"
+  setup = true
+
+  [[packages.muda.verify]]
+  command-exists = "muda"
+
+[packages.diazo]
+description = "diazo: plan a change with your agent on a shared page (diazo.tools)"
+needs = ["core"]
+
+  [[packages.diazo.download]]
+  site = "diazo.tools"
+  tool = "diazo"
+  bin = "diazo"
+  setup = true
+
+  [[packages.diazo.verify]]
+  command-exists = "diazo"
+
+# ---------------------------------------------------------------------------
+[profiles.suite]
+description = "tmux, Claude Code and the whole subaud suite"
+packages = ["core", "kempt", "muster", "galley", "tackle", "casebook", "muda", "diazo"]

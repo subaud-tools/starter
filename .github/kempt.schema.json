@@ -1,0 +1,300 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/subaud-tools/kempt/schema/kempt.json",
+  "title": "kempt.toml",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "kempt": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "spec": {
+          "type": "integer",
+          "enum": [1, 2],
+          "description": "Manifest schema version. 2 adds release setup: download setup = true and managed-file steps."
+        },
+        "layer": {
+          "type": "string",
+          "enum": ["user", "project"],
+          "description": "Marks this file as a layer applied on top of a base manifest (kempt layer add). user: configures the user's machine; project: configures one checkout, file primitives only, targets inside it."
+        }
+      }
+    },
+    "packages": {
+      "type": "object",
+      "additionalProperties": { "$ref": "#/$defs/package" }
+    },
+    "profiles": {
+      "type": "object",
+      "additionalProperties": { "$ref": "#/$defs/profile" }
+    },
+    "doctor": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "checkNpmOrphans": { "type": "boolean" },
+        "ignore": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  },
+  "$defs": {
+    "only": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "os": { "type": "string" },
+        "arch": { "type": "string" }
+      }
+    },
+    "profile": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "description": { "type": "string" },
+        "packages": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "package": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "description": { "type": "string" },
+        "needs": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "notes": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "only": { "$ref": "#/$defs/only" },
+        "install": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/installStep" }
+        },
+        "github-release": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/githubReleaseStep" }
+        },
+        "download": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/downloadStep" }
+        },
+        "git-clone": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/gitCloneStep" }
+        },
+        "service": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/serviceStep" }
+        },
+        "symlink": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/symlinkStep" }
+        },
+        "managed-file": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/managedFileStep" }
+        },
+        "json-merge": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/jsonMergeStep" }
+        },
+        "toml-merge": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/tomlMergeStep" }
+        },
+        "line-in-file": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/lineInFileStep" }
+        },
+        "verify": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/verifyStep" }
+        }
+      }
+    },
+    "installStep": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "brew": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "formulas": { "type": "array", "items": { "type": "string" } },
+            "casks": { "type": "array", "items": { "type": "string" } },
+            "taps": { "type": "array", "items": { "type": "string" } }
+          }
+        },
+        "winget": { "type": "array", "items": { "type": "string" } },
+        "apt": { "type": "array", "items": { "type": "string" } },
+        "npm": { "type": "array", "items": { "type": "string" } },
+        "pi": { "type": "array", "items": { "type": "string" } },
+        "only": { "$ref": "#/$defs/only" }
+      }
+    },
+    "githubReleaseStep": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "repo": { "type": "string" },
+        "asset": { "type": "string" },
+        "bin": { "type": "string" },
+        "only": { "$ref": "#/$defs/only" }
+      }
+    },
+    "downloadStep": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "site": { "type": "string" },
+        "tool": { "type": "string" },
+        "product": { "type": "string" },
+        "version": { "type": "string" },
+        "bin": { "type": "string" },
+        "setup": {
+          "type": "boolean",
+          "description": "Spec 2: plan the release's setup bundle (its [packages.integration]) at the same version."
+        },
+        "only": { "$ref": "#/$defs/only" }
+      }
+    },
+    "managedFileStep": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Spec 2: one release-owned file from the verified setup bundle.",
+      "required": ["from", "to", "mode"],
+      "allOf": [{
+        "if": {"required": ["adopt-markers"], "properties": {"adopt-markers": {"minProperties": 1}}},
+        "then": {"properties": {"to": {"pattern": "(^|/)SKILL[.]md$"}}}
+      }],
+      "properties": {
+        "adopt-markers": {"type": "object", "additionalProperties": {"type": "string"}},
+        "from": { "type": "string", "description": "A regular file relative to the setup bundle's files/." },
+        "to": { "type": "string" },
+        "mode": { "type": "string", "enum": ["0644", "0755"] },
+        "only": { "$ref": "#/$defs/only" }
+      }
+    },
+    "gitCloneStep": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "repo": { "type": "string" },
+        "to": { "type": "string" },
+        "ref": { "type": "string" },
+        "only": { "$ref": "#/$defs/only" }
+      }
+    },
+    "serviceStep": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "label": { "type": "string" },
+        "program": { "type": "array", "items": { "type": "string" } },
+        "env": {
+          "type": "object",
+          "additionalProperties": { "type": "string" }
+        },
+        "stdout": { "type": "string" },
+        "stderr": { "type": "string" },
+        "keep-alive": { "type": "boolean" },
+        "run-at-load": { "type": "boolean" },
+        "process-type": { "type": "string" },
+        "throttle-interval": { "type": "integer" },
+        "start-interval": { "type": "integer", "minimum": 1 },
+        "session-type": { "type": "string" },
+        "only": { "$ref": "#/$defs/only" }
+      }
+    },
+    "symlinkStep": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "from": { "type": "string" },
+        "to": { "type": "string" },
+        "backup": { "type": "boolean" },
+        "only": { "$ref": "#/$defs/only" }
+      }
+    },
+    "jsonMergeStep": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "file": { "type": "string" },
+        "merge": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "remove": { "type": "array", "items": { "type": "string" } },
+        "remove-hooks": {
+          "type": "array",
+          "items": {
+            "type": "object", "additionalProperties": false,
+            "required": ["event", "commands"],
+            "properties": {
+              "event": {"type": "string", "minLength": 1},
+              "matcher": {"type": "string"},
+              "commands": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}}
+            }
+          }
+        },
+        "arrays": { "enum": ["append", "replace"] },
+        "only": { "$ref": "#/$defs/only" }
+      }
+    },
+    "tomlMergeStep": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "file": { "type": "string" },
+        "merge": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "only": { "$ref": "#/$defs/only" }
+      }
+    },
+    "lineInFileStep": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "file": { "type": "string" },
+        "line": { "type": "string" },
+        "only": { "$ref": "#/$defs/only" }
+      }
+    },
+    "verifyStep": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "command-exists": { "type": "string" },
+        "command-exists-any": { "type": "array", "items": { "type": "string" } },
+        "http-ok": { "type": "string" },
+        "symlink-target": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "link": { "type": "string" },
+            "target": { "type": "string" }
+          }
+        },
+        "version-current": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "repo": { "type": "string" },
+            "command": { "type": "string" }
+          }
+        },
+        "only": { "$ref": "#/$defs/only" }
+      }
+    }
+  }
+}
+
