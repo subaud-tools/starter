@@ -66,6 +66,145 @@ needs = ["core"]
   only = { os = "darwin" }
 
 # ---------------------------------------------------------------------------
+# way-of-working: the shared rules and the process skills, for Claude Code and
+# pi alike. The rules file reaches Claude Code through one import line in
+# ~/.claude/CLAUDE.md (the rest of that file stays yours) and pi as
+# ~/.pi/agent/APPEND_SYSTEM.md (your ~/.pi/agent/AGENTS.md is never touched).
+# Each skill is linked as its own folder, since tool releases write their own
+# skills beside them; a folder already at a skill's path is backed up first.
+# ---------------------------------------------------------------------------
+[packages.way-of-working]
+description = "The shared rules and the process skills, for Claude Code and pi"
+needs = ["core"]
+
+  [[packages.way-of-working.symlink]]
+  from = "way-of-working.md"
+  to = "~/.claude/subaud-way-of-working.md"
+  backup = true
+
+  [[packages.way-of-working.line-in-file]]
+  file = "~/.claude/CLAUDE.md"
+  line = "@~/.claude/subaud-way-of-working.md"
+
+  [[packages.way-of-working.symlink]]
+  from = "way-of-working.md"
+  to = "~/.pi/agent/APPEND_SYSTEM.md"
+  backup = true
+
+  [[packages.way-of-working.symlink]]
+  from = "skills/brainstorming"
+  to = "~/.claude/skills/brainstorming"
+  backup = true
+
+  [[packages.way-of-working.symlink]]
+  from = "skills/brainstorming"
+  to = "~/.pi/agent/skills/brainstorming"
+  backup = true
+
+  [[packages.way-of-working.symlink]]
+  from = "skills/writing-plans"
+  to = "~/.claude/skills/writing-plans"
+  backup = true
+
+  [[packages.way-of-working.symlink]]
+  from = "skills/writing-plans"
+  to = "~/.pi/agent/skills/writing-plans"
+  backup = true
+
+  [[packages.way-of-working.symlink]]
+  from = "skills/executing-plans"
+  to = "~/.claude/skills/executing-plans"
+  backup = true
+
+  [[packages.way-of-working.symlink]]
+  from = "skills/executing-plans"
+  to = "~/.pi/agent/skills/executing-plans"
+  backup = true
+
+  [[packages.way-of-working.symlink]]
+  from = "skills/test-driven-development"
+  to = "~/.claude/skills/test-driven-development"
+  backup = true
+
+  [[packages.way-of-working.symlink]]
+  from = "skills/test-driven-development"
+  to = "~/.pi/agent/skills/test-driven-development"
+  backup = true
+
+  [[packages.way-of-working.symlink]]
+  from = "skills/systematic-debugging"
+  to = "~/.claude/skills/systematic-debugging"
+  backup = true
+
+  [[packages.way-of-working.symlink]]
+  from = "skills/systematic-debugging"
+  to = "~/.pi/agent/skills/systematic-debugging"
+  backup = true
+
+  [[packages.way-of-working.symlink]]
+  from = "skills/receiving-code-review"
+  to = "~/.claude/skills/receiving-code-review"
+  backup = true
+
+  [[packages.way-of-working.symlink]]
+  from = "skills/receiving-code-review"
+  to = "~/.pi/agent/skills/receiving-code-review"
+  backup = true
+
+  [[packages.way-of-working.symlink]]
+  from = "skills/remembering"
+  to = "~/.claude/skills/remembering"
+  backup = true
+
+  [[packages.way-of-working.symlink]]
+  from = "skills/remembering"
+  to = "~/.pi/agent/skills/remembering"
+  backup = true
+
+  [[packages.way-of-working.symlink]]
+  from = "skills/running-long-jobs"
+  to = "~/.claude/skills/running-long-jobs"
+  backup = true
+
+  [[packages.way-of-working.symlink]]
+  from = "skills/running-long-jobs"
+  to = "~/.pi/agent/skills/running-long-jobs"
+  backup = true
+
+  [[packages.way-of-working.symlink]]
+  from = "skills/pi-subagent-dispatch"
+  to = "~/.claude/skills/pi-subagent-dispatch"
+  backup = true
+
+  [[packages.way-of-working.symlink]]
+  from = "skills/pi-subagent-dispatch"
+  to = "~/.pi/agent/skills/pi-subagent-dispatch"
+  backup = true
+
+  [[packages.way-of-working.symlink]]
+  from = "skills/cleaning-up-branches"
+  to = "~/.claude/skills/cleaning-up-branches"
+  backup = true
+
+  [[packages.way-of-working.symlink]]
+  from = "skills/cleaning-up-branches"
+  to = "~/.pi/agent/skills/cleaning-up-branches"
+  backup = true
+
+  [[packages.way-of-working.symlink]]
+  from = "skills/driving-chrome"
+  to = "~/.claude/skills/driving-chrome"
+  backup = true
+
+  [[packages.way-of-working.symlink]]
+  from = "skills/driving-chrome"
+  to = "~/.pi/agent/skills/driving-chrome"
+  backup = true
+
+  [[packages.way-of-working.verify]]
+  symlink-target = { link = "~/.pi/agent/APPEND_SYSTEM.md", target = "way-of-working.md" }
+
+# ---------------------------------------------------------------------------
 # The suite. Each download is a family release from its own site; setup = true
 # takes the setup the release publishes beside the binary.
 # ---------------------------------------------------------------------------
@@ -212,4 +351,4 @@ needs = ["core"]
 # ---------------------------------------------------------------------------
 [profiles.suite]
 description = "tmux, an agent and the whole subaud suite"
-packages = ["core", "terminal", "kempt", "muster", "galley", "tackle", "casebook", "muda", "diazo"]
+packages = ["core", "terminal", "way-of-working", "kempt", "muster", "galley", "tackle", "casebook", "muda", "diazo"]
