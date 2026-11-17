@@ -54,8 +54,12 @@ agent, or run the command yourself:
 | `pi` | the pi coding agent on your Claude Code login (the claude-bridge provider), its extensions, the worker and reviewer subagents, and a permission policy that asks before any command off its allow list | `kempt adopt pi` |
 | `neovim` | Neovim with a LazyVim config, ripgrep, fd and FiraCode Nerd Font; an existing `~/.config/nvim` is backed up first | `kempt adopt neovim` |
 
-On a Mac, `pi` puts Homebrew's `node@24` on your PATH through one line in
-`~/.zprofile`; open a new terminal after adopting it.
+On a Mac, `pi` needs Homebrew's `node@24` on PATH while it installs, and adds
+one line to `~/.zprofile` so later shells have it:
+
+```sh
+PATH="$(brew --prefix)/opt/node@24/bin:$PATH" kempt adopt pi
+```
 
 ## Checks
 

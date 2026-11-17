@@ -100,7 +100,7 @@ Build the package in the run directory:
 { git -C <wt> log --oneline "$BASE"..HEAD; git -C <wt> diff "$BASE"...HEAD; } > <run-dir>/review-package.diff
 ```
 
-Both modes end here. Dispatch a `reviewer` from the other provider family from the implementer (the `pi-subagent-dispatch` skill names the models; never substitute a same-family reviewer). Its three files are the plan (as the brief), the report, and the package. In the prompt, add the spec path, the plan's Review Focus section verbatim (the reviewer checks each line deliberately), and a pointer to the report's `Ruling:` lines so it can weigh the calls made. This is the one fresh-context review the run buys; don't skip it or replace it with your own read of the diff.
+Both modes end here. Dispatch a `reviewer` from the other provider family from the implementer (the `pi-subagent-dispatch` skill names the models; never substitute a same-family reviewer without the user's yes). Its three files are the plan (as the brief), the report, and the package. In the prompt, add the spec path, the plan's Review Focus section verbatim (the reviewer checks each line deliberately), and a pointer to the report's `Ruling:` lines so it can weigh the calls made. This is the one fresh-context review the run buys; don't skip it or replace it with your own read of the diff.
 
 Handle the findings with the [receiving-code-review](../receiving-code-review/SKILL.md) skill: verify each against the code before acting, then sort it. The reviewer's severity labels are advice; grade a finding by what a reasonable person using this software gets if it ships. Its "Cannot verify from diff" list is yours too: each line becomes a ruling or a finding.
 

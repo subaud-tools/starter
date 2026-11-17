@@ -419,7 +419,7 @@ needs = ["core", "way-of-working"]
   [[packages.pi.json-merge]]
   file = "~/.pi/agent/settings.json"
   arrays = "replace"
-  merge = { defaultProvider = "claude-bridge", defaultThinkingLevel = "medium", hideThinkingBlock = true, theme = "dark", compaction = { enabled = true, reserveTokens = 16384, keepRecentTokens = 24000 }, extensions = ["-builtin:mcp"], packages = [ "npm:@subaud-tools/pi-claude-bridge@0.9.3-subaud-tools.2", "npm:@subaud-tools/pi-usage@0.14.2-subaud-tools.1", "npm:@gotgenes/pi-permission-system@npm:@subaud-tools/pi-permission-system@40.3.0-subaud-tools.1", "npm:@tintinweb/pi-subagents", "npm:@bitcraft-apps/pi-web-tools", "npm:pi-quiet@0.2.1", "npm:@hank-warren/pi-plan-mode", "npm:@subaud-tools/pi-schedule@0.6.1-subaud-tools.2", "npm:channels.tools", "npm:pi-mcp-adapter", "npm:pi-tmux-bridge@0.1.5", "npm:pi-wakeup@0.3.0", "npm:pi-creel", "npm:pi-bang", "npm:pi-copy", "npm:pi-auto-reload@0.2.1" ] }
+  merge = { defaultProvider = "claude-bridge", defaultThinkingLevel = "medium", hideThinkingBlock = true, theme = "dark", compaction = { enabled = true, reserveTokens = 16384, keepRecentTokens = 24000 }, packages = [ "npm:@subaud-tools/pi-claude-bridge@0.9.3-subaud-tools.2", "npm:@subaud-tools/pi-usage@0.14.2-subaud-tools.1", "npm:@gotgenes/pi-permission-system@npm:@subaud-tools/pi-permission-system@40.3.0-subaud-tools.1", "npm:@tintinweb/pi-subagents", "npm:@bitcraft-apps/pi-web-tools", "npm:pi-quiet@0.2.1", "npm:@hank-warren/pi-plan-mode", "npm:@subaud-tools/pi-schedule@0.6.1-subaud-tools.2", "npm:channels.tools", "npm:pi-mcp-adapter", "npm:pi-tmux-bridge@0.1.5", "npm:pi-wakeup@0.3.0", "npm:pi-creel", "npm:pi-bang", "npm:pi-copy", "npm:pi-auto-reload@0.2.1" ] }
 
   # The permission policy: yolo mode off, so a tool call off the allow list
   # asks first, and the denies (environment files, ~/.ssh, git stash) hold
@@ -428,7 +428,7 @@ needs = ["core", "way-of-working"]
   [[packages.pi.json-merge]]
   file = "~/.pi/agent/extensions/pi-permission-system/config.json"
   arrays = "replace"
-  merge = { "$schema" = "https://raw.githubusercontent.com/gotgenes/pi-packages/main/packages/pi-permission-system/schemas/permissions.schema.json", "permission" = { "*" = "ask", "path" = { "*" = "allow", "*.env" = { "action" = "deny", "reason" = "environment files hold secrets; read the .env.example instead" }, "*.env.*" = { "action" = "deny", "reason" = "environment files hold secrets; read the .env.example instead" }, "*.env.example" = "allow", "~/.ssh/*" = { "action" = "deny", "reason" = "SSH keys and config are off limits to the agent" } }, "read" = "allow", "write" = "allow", "edit" = "allow", "WebSearch" = "allow", "WebFetch" = { "*" = "ask", "https://github.com/*" = "allow" }, "bash" = { "*" = "ask", "git stash" = { "action" = "deny", "reason" = "git stash hides work; commit or use a worktree" }, "git stash *" = { "action" = "deny", "reason" = "git stash hides work; commit or use a worktree" }, "git add *" = "allow", "git commit *" = "allow", "git pull *" = "allow", "git fetch *" = "allow", "git ls-tree *" = "allow", "git push --dry-run*" = "allow", "gh pr list *" = "allow", "gh pr view *" = "allow", "gh pr diff *" = "allow", "gh pr checks *" = "allow", "gh repo view *" = "allow", "gh run list *" = "allow", "gh run view *" = "allow", "cd *" = "allow", "grep *" = "allow", "ls *" = "allow", "sleep *" = "allow", "npx --version" = "allow", "npx --help" = "allow", "npm --version" = "allow", "pip --version" = "allow", "pip3 --version" = "allow", "git push *" = "allow", "gh api *" = "allow", "gh auth *" = "allow", "gh pr *" = "allow", "gh repo *" = "allow", "muster" = "allow", "muster *" = "allow", "galley" = "allow", "galley *" = "allow", "head *" = "allow", "cat *" = "allow", "tail *" = "allow", "sed -n *" = "allow", "sort *" = "allow", "wc *" = "allow", "which *" = "allow", "pwd" = "allow", "git log *" = "allow", "git status" = "allow", "git status *" = "allow", "git diff *" = "allow", "git show *" = "allow", "gh -R *" = "allow", "tmux capture-pane *" = "allow", "git -C * status" = "allow", "git -C * status *" = "allow", "git rev-parse *" = "allow", "go build *" = "allow" }, "mcp" = { "*" = "ask" }, "Agent" = "allow", "get_subagent_result" = "allow", "steer_subagent" = "allow", "grep" = "allow", "find" = "allow", "ls" = "allow", "schedule" = "allow", "request_secret" = "allow", "websearch" = "allow", "webfetch" = { "*" = "ask", "https://github.com/*" = "allow" }, "file_channel_status" = "allow", "skill" = { "*" = "ask", "update-config" = "allow" }, "external_directory" = { "*" = "ask", "~/.nvm/versions/*" = "allow", "/tmp/*" = "allow", "/private/var/folders/*" = "allow" }, "muster_channel_status" = "allow", "galley_channel_status" = "allow", "galley_ack" = "allow", "galley_review" = "allow", "cancel_wakeup" = "allow", "schedule_wakeup" = "allow", "artifact" = "allow" }, "yoloMode" = false, "authorizerChain" = [], "promptAnswerers" = [] }
+  merge = { "$schema" = "https://raw.githubusercontent.com/gotgenes/pi-packages/main/packages/pi-permission-system/schemas/permissions.schema.json", "permission" = { "*" = "ask", "path" = { "*" = "allow", "*.env" = { "action" = "deny", "reason" = "environment files hold secrets; read the .env.example instead" }, "*.env.*" = { "action" = "deny", "reason" = "environment files hold secrets; read the .env.example instead" }, "*.env.example" = "allow", "~/.ssh/*" = { "action" = "deny", "reason" = "SSH keys and config are off limits to the agent" } }, "read" = "allow", "write" = "allow", "edit" = "allow", "WebSearch" = "allow", "WebFetch" = { "*" = "ask", "https://github.com/*" = "allow" }, "bash" = { "*" = "ask", "git stash" = { "action" = "deny", "reason" = "git stash hides work; commit or use a worktree" }, "git stash *" = { "action" = "deny", "reason" = "git stash hides work; commit or use a worktree" }, "git add *" = "allow", "git commit *" = "allow", "git pull *" = "allow", "git fetch *" = "allow", "git ls-tree *" = "allow", "git push --dry-run*" = "allow", "gh pr list *" = "allow", "gh pr view *" = "allow", "gh pr diff *" = "allow", "gh pr checks *" = "allow", "gh repo view *" = "allow", "gh run list *" = "allow", "gh run view *" = "allow", "cd *" = "allow", "grep *" = "allow", "ls *" = "allow", "sleep *" = "allow", "npx --version" = "allow", "npx --help" = "allow", "npm --version" = "allow", "pip --version" = "allow", "pip3 --version" = "allow", "muster" = "allow", "muster *" = "allow", "galley" = "allow", "galley *" = "allow", "head *" = "allow", "cat *" = "allow", "tail *" = "allow", "sed -n *" = "allow", "sort *" = "allow", "wc *" = "allow", "which *" = "allow", "pwd" = "allow", "git log *" = "allow", "git status" = "allow", "git status *" = "allow", "git diff *" = "allow", "git show *" = "allow", "gh -R *" = "allow", "tmux capture-pane *" = "allow", "git -C * status" = "allow", "git -C * status *" = "allow", "git rev-parse *" = "allow", "go build *" = "allow" }, "mcp" = { "*" = "ask" }, "Agent" = "allow", "get_subagent_result" = "allow", "steer_subagent" = "allow", "grep" = "allow", "find" = "allow", "ls" = "allow", "schedule" = "allow", "request_secret" = "allow", "websearch" = "allow", "webfetch" = { "*" = "ask", "https://github.com/*" = "allow" }, "file_channel_status" = "allow", "skill" = { "*" = "ask", "update-config" = "allow" }, "external_directory" = { "*" = "ask", "~/.nvm/versions/*" = "allow", "/tmp/*" = "allow", "/private/var/folders/*" = "allow" }, "muster_channel_status" = "allow", "galley_channel_status" = "allow", "galley_ack" = "allow", "galley_review" = "allow", "cancel_wakeup" = "allow", "schedule_wakeup" = "allow", "artifact" = "allow" }, "yoloMode" = false, "authorizerChain" = [], "promptAnswerers" = [] }
 
   # claude-bridge: askClaude stays read-only and isolated; the provider uses
   # only the MCP servers pi passes it, keeps Claude Code's auto-memory off, and
@@ -440,8 +440,13 @@ needs = ["core", "way-of-working"]
   # The worker and reviewer subagents. They pin no model, so the dispatch
   # picks one (the pi-subagent-dispatch skill).
   [[packages.pi.symlink]]
-  from = "agents"
-  to = "~/.pi/agent/agents"
+  from = "agents/worker.md"
+  to = "~/.pi/agent/agents/worker.md"
+  backup = true
+
+  [[packages.pi.symlink]]
+  from = "agents/reviewer.md"
+  to = "~/.pi/agent/agents/reviewer.md"
   backup = true
 
   # fallbackSubagent = "none": a misspelled subagent type fails instead of
@@ -452,12 +457,11 @@ needs = ["core", "way-of-working"]
   to = "~/.pi/agent/subagents.json"
   backup = true
 
-  # Extra skill paths: none beyond ~/.pi/agent/skills, which pi finds on its
-  # own. A layer that needs more adds them.
+  # pi-mcp-adapter replaces pi's built-in MCP support, so the built-in stays
+  # off. Appended, so extensions the buyer turned on or off keep their place.
   [[packages.pi.json-merge]]
   file = "~/.pi/agent/settings.json"
-  arrays = "replace"
-  merge = { skills = [] }
+  merge = { extensions = ["-builtin:mcp"] }
 
   [[packages.pi.verify]]
   command-exists = "pi"
