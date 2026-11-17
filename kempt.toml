@@ -349,6 +349,147 @@ needs = ["core"]
   command-exists = "diazo"
 
 # ---------------------------------------------------------------------------
+# pi: the pi coding agent on the Claude Code login (the claude-bridge
+# provider), with its extensions, the worker and reviewer subagents, and a
+# permission policy that asks before anything off its allow list. Not in the
+# suite: setup.sh adopts it when the line names pi (`kempt adopt pi`).
+# ---------------------------------------------------------------------------
+[packages.pi]
+description = "pi coding agent on the claude-bridge provider, with its extensions"
+needs = ["core", "way-of-working"]
+
+  # node@24: pi runs on the Node LTS line, not Homebrew's `node`, which tracks
+  # the newest major. ddgr, pandoc and trafilatura back pi-web-tools' search
+  # and fetch. Linux: trafilatura is not in Ubuntu's apt, and Node 24 has to
+  # come from elsewhere (Ubuntu's nodejs is older).
+  [[packages.pi.install]]
+  brew.formulas = ["ddgr", "pandoc", "trafilatura", "node@24"]
+  apt = ["ddgr", "pandoc"]
+
+  # node@24 is keg-only: Homebrew leaves it off PATH. This puts it on PATH for
+  # login shells, so npm, pi and the npm step below find it.
+  [[packages.pi.line-in-file]]
+  file = "~/.zprofile"
+  line = 'for d in /opt/homebrew/opt/node@24/bin /usr/local/opt/node@24/bin; do [ -d "$d" ] && PATH="$d:$PATH"; done; export PATH'
+  only = { os = "darwin" }
+
+  [[packages.pi.install]]
+  npm = ["@earendil-works/pi-coding-agent"]
+
+  # The extensions. An unversioned entry rolls to the newest release on
+  # `kempt update`; a pinned name@version stays on exactly that version. The
+  # @subaud-tools entries are maintained forks, pinned and bumped here.
+  # This list must match the settings.json `packages` list below string for
+  # string.
+  [[packages.pi.install]]
+  pi = [
+    # The provider defaultProvider points at; keep it first so it loads before
+    # channels.tools.
+    "npm:@subaud-tools/pi-claude-bridge@0.9.3-subaud-tools.2",
+    # Provider usage meter; keep it right after the bridge.
+    "npm:@subaud-tools/pi-usage@0.14.2-subaud-tools.1",
+    # The permission system, installed under the upstream name through an npm
+    # alias so the upstream package can never also load. Bump the version at
+    # the end of the string.
+    "npm:@gotgenes/pi-permission-system@npm:@subaud-tools/pi-permission-system@40.3.0-subaud-tools.1",
+    "npm:@tintinweb/pi-subagents",
+    "npm:@bitcraft-apps/pi-web-tools",
+    "npm:pi-quiet@0.2.1",
+    "npm:@hank-warren/pi-plan-mode",
+    "npm:@subaud-tools/pi-schedule@0.6.1-subaud-tools.2",
+    "npm:channels.tools",
+    # The MCP bridge: one lazy mcp() tool instead of every server's tools in
+    # context. Servers are configured in .mcp.json or ~/.config/mcp/mcp.json.
+    "npm:pi-mcp-adapter",
+    "npm:pi-tmux-bridge@0.1.5",
+    "npm:pi-wakeup@0.3.0",
+    "npm:pi-creel",
+    "npm:pi-bang",
+    "npm:pi-copy",
+    # Reloads an idle session after `kempt update` changes installed packages.
+    "npm:pi-auto-reload@0.2.1",
+  ]
+
+  # settings: arrays = "replace" makes this list the whole of settings.json's
+  # `packages`, since `pi install` also writes there and an append would
+  # collect duplicates. extensions turns off pi's built-in MCP, which
+  # pi-mcp-adapter replaces. A layer on top adds its own packages; kempt
+  # combines the lists.
+  [[packages.pi.json-merge]]
+  file = "~/.pi/agent/settings.json"
+  arrays = "replace"
+  merge = { defaultProvider = "claude-bridge", defaultThinkingLevel = "medium", hideThinkingBlock = true, theme = "dark", compaction = { enabled = true, reserveTokens = 16384, keepRecentTokens = 24000 }, extensions = ["-builtin:mcp"], packages = [ "npm:@subaud-tools/pi-claude-bridge@0.9.3-subaud-tools.2", "npm:@subaud-tools/pi-usage@0.14.2-subaud-tools.1", "npm:@gotgenes/pi-permission-system@npm:@subaud-tools/pi-permission-system@40.3.0-subaud-tools.1", "npm:@tintinweb/pi-subagents", "npm:@bitcraft-apps/pi-web-tools", "npm:pi-quiet@0.2.1", "npm:@hank-warren/pi-plan-mode", "npm:@subaud-tools/pi-schedule@0.6.1-subaud-tools.2", "npm:channels.tools", "npm:pi-mcp-adapter", "npm:pi-tmux-bridge@0.1.5", "npm:pi-wakeup@0.3.0", "npm:pi-creel", "npm:pi-bang", "npm:pi-copy", "npm:pi-auto-reload@0.2.1" ] }
+
+  # The permission policy: yolo mode off, so a tool call off the allow list
+  # asks first, and the denies (environment files, ~/.ssh, git stash) hold
+  # either way. No prompt answerer. Rules added by hand on a machine survive:
+  # the merge adds, it doesn't remove.
+  [[packages.pi.json-merge]]
+  file = "~/.pi/agent/extensions/pi-permission-system/config.json"
+  arrays = "replace"
+  merge = { "$schema" = "https://raw.githubusercontent.com/gotgenes/pi-packages/main/packages/pi-permission-system/schemas/permissions.schema.json", "permission" = { "*" = "ask", "path" = { "*" = "allow", "*.env" = { "action" = "deny", "reason" = "environment files hold secrets; read the .env.example instead" }, "*.env.*" = { "action" = "deny", "reason" = "environment files hold secrets; read the .env.example instead" }, "*.env.example" = "allow", "~/.ssh/*" = { "action" = "deny", "reason" = "SSH keys and config are off limits to the agent" } }, "read" = "allow", "write" = "allow", "edit" = "allow", "WebSearch" = "allow", "WebFetch" = { "*" = "ask", "https://github.com/*" = "allow" }, "bash" = { "*" = "ask", "git stash" = { "action" = "deny", "reason" = "git stash hides work; commit or use a worktree" }, "git stash *" = { "action" = "deny", "reason" = "git stash hides work; commit or use a worktree" }, "git add *" = "allow", "git commit *" = "allow", "git pull *" = "allow", "git fetch *" = "allow", "git ls-tree *" = "allow", "git push --dry-run*" = "allow", "gh pr list *" = "allow", "gh pr view *" = "allow", "gh pr diff *" = "allow", "gh pr checks *" = "allow", "gh repo view *" = "allow", "gh run list *" = "allow", "gh run view *" = "allow", "cd *" = "allow", "grep *" = "allow", "ls *" = "allow", "sleep *" = "allow", "npx --version" = "allow", "npx --help" = "allow", "npm --version" = "allow", "pip --version" = "allow", "pip3 --version" = "allow", "git push *" = "allow", "gh api *" = "allow", "gh auth *" = "allow", "gh pr *" = "allow", "gh repo *" = "allow", "muster" = "allow", "muster *" = "allow", "galley" = "allow", "galley *" = "allow", "head *" = "allow", "cat *" = "allow", "tail *" = "allow", "sed -n *" = "allow", "sort *" = "allow", "wc *" = "allow", "which *" = "allow", "pwd" = "allow", "git log *" = "allow", "git status" = "allow", "git status *" = "allow", "git diff *" = "allow", "git show *" = "allow", "gh -R *" = "allow", "tmux capture-pane *" = "allow", "git -C * status" = "allow", "git -C * status *" = "allow", "git rev-parse *" = "allow", "go build *" = "allow" }, "mcp" = { "*" = "ask" }, "Agent" = "allow", "get_subagent_result" = "allow", "steer_subagent" = "allow", "grep" = "allow", "find" = "allow", "ls" = "allow", "schedule" = "allow", "request_secret" = "allow", "websearch" = "allow", "webfetch" = { "*" = "ask", "https://github.com/*" = "allow" }, "file_channel_status" = "allow", "skill" = { "*" = "ask", "update-config" = "allow" }, "external_directory" = { "*" = "ask", "~/.nvm/versions/*" = "allow", "/tmp/*" = "allow", "/private/var/folders/*" = "allow" }, "muster_channel_status" = "allow", "galley_channel_status" = "allow", "galley_ack" = "allow", "galley_review" = "allow", "cancel_wakeup" = "allow", "schedule_wakeup" = "allow", "artifact" = "allow" }, "yoloMode" = false, "authorizerChain" = [], "promptAnswerers" = [] }
+
+  # claude-bridge: askClaude stays read-only and isolated; the provider uses
+  # only the MCP servers pi passes it, keeps Claude Code's auto-memory off, and
+  # never opts into long-context extra usage.
+  [[packages.pi.json-merge]]
+  file = "~/.pi/agent/claude-bridge.json"
+  merge = { askClaude = { enabled = true, defaultMode = "read", defaultIsolated = true, allowFullMode = false }, provider = { strictMcpConfig = true, autoMemoryEnabled = false, longContextExtraUsage = false } }
+
+  # The worker and reviewer subagents. They pin no model, so the dispatch
+  # picks one (the pi-subagent-dispatch skill).
+  [[packages.pi.symlink]]
+  from = "agents"
+  to = "~/.pi/agent/agents"
+  backup = true
+
+  # fallbackSubagent = "none": a misspelled subagent type fails instead of
+  # quietly starting general-purpose. strictAgentFiles: a broken agent file
+  # shows at startup.
+  [[packages.pi.symlink]]
+  from = "subagents.json"
+  to = "~/.pi/agent/subagents.json"
+  backup = true
+
+  # Extra skill paths: none beyond ~/.pi/agent/skills, which pi finds on its
+  # own. A layer that needs more adds them.
+  [[packages.pi.json-merge]]
+  file = "~/.pi/agent/settings.json"
+  arrays = "replace"
+  merge = { skills = [] }
+
+  [[packages.pi.verify]]
+  command-exists = "pi"
+
+  [[packages.pi.verify]]
+  symlink-target = { link = "~/.pi/agent/agents", target = "agents" }
+
+# ---------------------------------------------------------------------------
+# neovim: Neovim with a LazyVim config, and what LazyVim needs (ripgrep, fd,
+# a Nerd Font). Not in the suite; adopt it with `kempt adopt neovim`. A
+# ~/.config/nvim already there is backed up before the link replaces it.
+# ---------------------------------------------------------------------------
+[packages.neovim]
+description = "Neovim with a LazyVim config"
+needs = ["core"]
+
+  [[packages.neovim.install]]
+  brew.formulas = ["neovim", "ripgrep", "fd"]
+  brew.casks = ["font-fira-code-nerd-font"]
+  apt = ["neovim", "ripgrep", "fd-find"]
+
+  [[packages.neovim.symlink]]
+  from = "config/nvim"
+  to = "~/.config/nvim"
+  backup = true
+
+  [[packages.neovim.verify]]
+  command-exists = "nvim"
+
+  [[packages.neovim.verify]]
+  symlink-target = { link = "~/.config/nvim", target = "config/nvim" }
+
+# ---------------------------------------------------------------------------
 [profiles.suite]
 description = "tmux, an agent and the whole subaud suite"
 packages = ["core", "terminal", "way-of-working", "kempt", "muster", "galley", "tackle", "casebook", "muda", "diazo"]
