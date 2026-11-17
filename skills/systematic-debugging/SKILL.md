@@ -34,9 +34,9 @@ Finish each phase before starting the next.
 
    ```bash
    # Layer 1: workflow
-   echo "IDENTITY: ${IDENTITY:+SET}${IDENTITY:-UNSET}"
+   echo "IDENTITY: $([ -n "${IDENTITY:-}" ] && echo SET || echo UNSET)"
    # Layer 2: build script
-   env | grep IDENTITY || echo "IDENTITY not in environment"
+   printenv IDENTITY >/dev/null 2>&1 && echo "IDENTITY in environment" || echo "IDENTITY not in environment"
    # Layer 3: signing
    security find-identity -v
    codesign --sign "$IDENTITY" --verbose=4 "$APP"
