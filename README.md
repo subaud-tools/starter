@@ -1,10 +1,11 @@
 # subaud starter
 
 A minimal [kempt](https://kempt.tools) config that sets up a machine for the
-[subaud](https://subaud.tools) suite: tmux, and every suite tool (muster,
-galley, kempt, tackle, casebook, muda, diazo) with the skills, Claude Code
-plugin and pi channel each release ships. Nothing else: no shell config, no
-editor, no personal settings.
+[subaud](https://subaud.tools) suite: tmux, Ghostty and yazi, every suite
+tool (muster, galley, kempt, tackle, casebook, muda, diazo) with the skills,
+Claude Code plugin and pi channel each release ships, and the way of working:
+shared rules and process skills for your agent. No shell config and no
+personal settings; every file it links over yours is backed up first.
 
 ## Use it
 
@@ -31,6 +32,8 @@ and opens your agent on "Get me started with subaud."
 | Package | What |
 |---|---|
 | `core` | tmux, and a check that Claude Code or pi is here |
+| `terminal` | Ghostty and FiraCode Nerd Font on a Mac, and yazi: proj opens sessions in Ghostty and runs yazi in its sidebar |
+| `way-of-working` | the shared rules (`way-of-working.md`), loaded by Claude Code through one import line in `~/.claude/CLAUDE.md` and by pi as `~/.pi/agent/APPEND_SYSTEM.md`, and the process skills, each linked into `~/.claude/skills` and `~/.pi/agent/skills` |
 | `kempt` | kempt itself, so `kempt update` keeps it current |
 | `muster` | messages between agent sessions on this machine |
 | `galley` | review a document with your agent on a page |
@@ -58,5 +61,12 @@ On a Mac, `pi` puts Homebrew's `node@24` on your PATH through one line in
 
 CI checks that `kempt.toml` parses, matches kempt's schema
 (`.github/kempt.schema.json`, from `kempt schema`), and that the `suite`
-profile selects every package. On a machine with kempt, `kempt lint kempt.toml`
-and `kempt plan -manifest kempt.toml -profile suite` check it fully.
+profile selects every package but the two to adopt. It also fails when a
+tracked file holds a home path, an email address other than a noreply one, a
+12-digit number or a private key. Run both with `python .github/check.py`. On
+a machine with kempt, `kempt lint kempt.toml` and
+`kempt plan -manifest kempt.toml -profile suite` check it fully.
+
+The process skills are adapted in part from
+[obra/superpowers](https://github.com/obra/superpowers) (MIT); its license is
+in `LICENSES/superpowers`.

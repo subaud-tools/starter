@@ -1,6 +1,7 @@
 # kempt.toml: the subaud starter. Sets up a machine for the subaud suite:
-# tmux, and every suite tool with its release setup (skills, Claude Code
-# plugin, pi channel).
+# tmux, Ghostty and yazi, every suite tool with its release setup (skills,
+# Claude Code plugin, pi channel), and the way of working (shared rules and
+# process skills). pi and neovim are packages a machine adopts on top.
 #
 # https://subaud.tools/setup.sh runs it, from the line on the account page:
 #
@@ -491,5 +492,5 @@ needs = ["core"]
 
 # ---------------------------------------------------------------------------
 [profiles.suite]
-description = "tmux, an agent and the whole subaud suite"
+description = "tmux, Ghostty and yazi, an agent, the whole subaud suite and the way of working"
 packages = ["core", "terminal", "way-of-working", "kempt", "muster", "galley", "tackle", "casebook", "muda", "diazo"]
