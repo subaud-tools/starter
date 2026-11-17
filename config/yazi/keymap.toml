@@ -1,0 +1,14 @@
+# yazi keymap — defaults are good; we only add quality-of-life tweaks here.
+# Full keymap reference: https://yazi-rs.github.io/docs/configuration/keymap
+
+[mgr]
+prepend_keymap = [
+  # `q` quits yazi (closes the tmux pane), matching the usage guide.
+  { on = "q", run = "quit", desc = "Quit yazi" },
+  # Quick toggle hidden files.
+  { on = ".", run = "hidden toggle", desc = "Toggle hidden files" },
+  # <Enter> descends into directories and opens files (plugins/smart-enter.yazi).
+  { on = "<Enter>", run = "plugin smart-enter", desc = "Enter directory or open file" },
+  # Reveal the hovered file or folder in Finder.
+  { on = "R", run = "shell 'open -R %h' --orphan", desc = "Reveal in Finder" },
+]

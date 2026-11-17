@@ -34,6 +34,38 @@ description = "tmux, and an agent (Claude Code or pi)"
   command-exists-any = ["claude", "pi"]
 
 # ---------------------------------------------------------------------------
+# terminal: what proj needs around it. proj opens sessions in Ghostty and runs
+# yazi in its sidebar. FiraCode Nerd Font is the font the Ghostty config names
+# and carries the icons yazi draws. A config already at either path is backed
+# up before the link replaces it.
+# ---------------------------------------------------------------------------
+[packages.terminal]
+description = "Ghostty (Mac) and yazi, with FiraCode Nerd Font"
+needs = ["core"]
+
+  # Linux: Ghostty is a Mac cask here, and yazi is not in Ubuntu 24.04's
+  # apt; both stay Mac-only.
+  [[packages.terminal.install]]
+  brew.formulas = ["yazi"]
+  brew.casks = ["ghostty", "font-fira-code-nerd-font"]
+  only = { os = "darwin" }
+
+  [[packages.terminal.symlink]]
+  from = "config/ghostty/config"
+  to = "~/.config/ghostty/config"
+  backup = true
+  only = { os = "darwin" }
+
+  [[packages.terminal.symlink]]
+  from = "config/yazi"
+  to = "~/.config/yazi"
+  backup = true
+
+  [[packages.terminal.verify]]
+  command-exists = "yazi"
+  only = { os = "darwin" }
+
+# ---------------------------------------------------------------------------
 # The suite. Each download is a family release from its own site; setup = true
 # takes the setup the release publishes beside the binary.
 # ---------------------------------------------------------------------------
@@ -180,4 +212,4 @@ needs = ["core"]
 # ---------------------------------------------------------------------------
 [profiles.suite]
 description = "tmux, an agent and the whole subaud suite"
-packages = ["core", "kempt", "muster", "galley", "tackle", "casebook", "muda", "diazo"]
+packages = ["core", "terminal", "kempt", "muster", "galley", "tackle", "casebook", "muda", "diazo"]
