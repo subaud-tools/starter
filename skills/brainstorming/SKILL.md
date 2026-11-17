@@ -45,6 +45,7 @@ When in doubt between two paths, take the heavier one. The ratchet is one-way: h
 
 | Thought | Reality |
 |---------|---------|
+| "I'll offer a menu" | Options steer the answer. Ask the why openly first; then options, each with its trade-off and your pick. |
 | "This is too simple to need a design" | Follow the selected path: a bounded change gets a short chat design; an architectural change gets the written spec and planning handoffs. |
 | "I'll call it bounded and skip the spec" | Reaching for a label to skip work IS the doubt. Take the heavier path. |
 | "It's bounded and the design is obvious; I'll start while the user reads it" | The gate is the approval, not the design's length. Present, then stop until you hear yes. |
@@ -91,7 +92,7 @@ The subsections below serve the bounded and architectural paths (a spike stops a
 - Before asking detailed questions, assess scope: if the request describes multiple independent subsystems (e.g., "build a platform with chat, file storage, billing, and analytics"), flag this immediately. Don't spend questions refining details of a project that needs to be decomposed first.
 - If the project is too large for a single spec, help the user decompose it into sub-projects: what are the independent pieces, how do they relate, what order should they be built? Then brainstorm the first sub-project through the normal design flow. Each sub-project gets its own spec → plan → implementation cycle.
 - For appropriately-scoped projects, ask questions one at a time to refine the idea
-- Prefer multiple choice questions when possible, but open-ended is fine too
+- Ask the why first, as an open question with nothing to pick from. Once the why is known, sketch each option with its trade-off and say which you'd pick; never a bare "which one?"
 - Only one question per message. Ask only the forks you can't settle from the user's earlier answers or a standard; decide the rest and list them as reversible. Say up front how many questions to expect, and ask fewer once the user keeps taking your recommendations.
 - Focus on understanding: purpose, constraints, success criteria
 
