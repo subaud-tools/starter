@@ -98,6 +98,7 @@ Each check applies when you choose what to build or recommend.
 - Rules files hold rules, not history: one line per rule with its reason, under about 40 words. The story, measurements and reversals go in the commit or the issue.
 - Put a message the user will send to someone else in a blockquote under a `Message for <name>:` line, so it can be copied alone.
 - Draw diagrams in mermaid, never ASCII art.
+- Draw mermaid flowcharts top-down (`flowchart TD`): horizontal ones are hard to read.
 - Public prose (READMEs, landing pages, posts) explains rather than sells, in complete sentences, defining each term with an example before using it.
 - Document only what a reader would be surprised by or must act on.
 
