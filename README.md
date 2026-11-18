@@ -51,15 +51,27 @@ agent, or run the command yourself:
 
 | Package | What | Adopt it |
 |---|---|---|
-| `pi` | the pi coding agent on your Claude Code login (the claude-bridge provider), its extensions, the worker and reviewer subagents, and a permission policy that asks before any command off its allow list | `kempt adopt pi` |
-| `neovim` | Neovim with a LazyVim config, ripgrep, fd and FiraCode Nerd Font; an existing `~/.config/nvim` is backed up first | `kempt adopt neovim` |
+| `pi` | the pi coding agent on your Claude Code login (the claude-bridge provider), its extensions, the worker and reviewer subagents, and a permission policy that asks before any command off its allow list | `kempt adopt pi`, then apply (below) |
+| `neovim` | Neovim with a LazyVim config, ripgrep, fd and FiraCode Nerd Font; an existing `~/.config/nvim` is backed up first | `kempt adopt neovim && kempt apply -yes` |
 
-On a Mac, `pi` needs Homebrew's `node@24` on PATH while it installs, and adds
-one line to `~/.zprofile` so later shells have it:
+`kempt adopt` only saves the choice; `kempt apply` installs it. On a Mac, `pi`
+installs with npm from Homebrew's `node@24`, which Homebrew leaves off PATH,
+so put it on PATH first (the package adds one line to `~/.zprofile` so later
+shells have it). kempt inspects every step before it applies any and skips one
+whose tool isn't there yet, so a Mac without `node@24` takes three applies
+(`node@24`, then pi, then pi's extensions); apply until `pi` was already
+installed when the apply started:
 
 ```sh
-PATH="$(brew --prefix)/opt/node@24/bin:$PATH" kempt adopt pi
+PATH="$(brew --prefix)/opt/node@24/bin:$PATH"; export PATH
+kempt adopt pi
+kempt apply -yes   # installs node@24
+kempt apply -yes   # installs pi
+kempt apply -yes   # installs pi's extensions
+pi --version
 ```
+
+The account page's line does the same with ` pi` on its end.
 
 ## Checks
 
