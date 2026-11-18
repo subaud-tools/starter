@@ -55,19 +55,14 @@ agent, or run the command yourself:
 | `neovim` | Neovim with a LazyVim config, ripgrep, fd and FiraCode Nerd Font; an existing `~/.config/nvim` is backed up first | `kempt adopt neovim && kempt apply -yes` |
 
 `kempt adopt` only saves the choice; `kempt apply` installs it. On a Mac, `pi`
-installs with npm from Homebrew's `node@24`, which Homebrew leaves off PATH,
-so put it on PATH first (the package adds one line to `~/.zprofile` so later
-shells have it). kempt inspects every step before it applies any and skips one
-whose tool isn't there yet, so a Mac without `node@24` takes three applies
-(`node@24`, then pi, then pi's extensions); apply until `pi` was already
-installed when the apply started:
+installs with npm from Homebrew's `node@24`, which Homebrew leaves off PATH;
+kempt 0.23.0 and later put it on PATH for its own run, so one apply installs
+`node@24`, pi and pi's extensions (the package also adds one line to
+`~/.zprofile` so later shells have it):
 
 ```sh
-PATH="$(brew --prefix)/opt/node@24/bin:$PATH"; export PATH
 kempt adopt pi
-kempt apply -yes   # installs node@24
-kempt apply -yes   # installs pi
-kempt apply -yes   # installs pi's extensions
+kempt apply -yes
 pi --version
 ```
 
