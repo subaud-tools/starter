@@ -1,10 +1,11 @@
 # subaud starter
 
 A minimal [kempt](https://kempt.tools) config that sets up a machine for the
-[subaud](https://subaud.tools) suite: tmux, and every suite tool (muster,
-galley, kempt, tackle, casebook, muda, diazo) with the skills, Claude Code
-plugin and pi channel each release ships. Nothing else: no shell config, no
-editor, no personal settings.
+[subaud](https://subaud.tools) suite: tmux, Ghostty and yazi, every suite
+tool (muster, galley, kempt, tackle, casebook, muda, diazo) with the skills,
+Claude Code plugin and pi channel each release ships, and the way of working:
+shared rules and process skills for your agent. No shell config and no
+personal settings; every file it links over yours is backed up first.
 
 ## Use it
 
@@ -31,6 +32,8 @@ and opens your agent on "Get me started with subaud."
 | Package | What |
 |---|---|
 | `core` | tmux, and a check that Claude Code or pi is here |
+| `terminal` | Ghostty and FiraCode Nerd Font on a Mac, and yazi: proj opens sessions in Ghostty and runs yazi in its sidebar |
+| `way-of-working` | the shared rules (`way-of-working.md`), loaded by Claude Code through one import line in `~/.claude/CLAUDE.md` and by pi as `~/.pi/agent/APPEND_SYSTEM.md`, and the process skills, each linked into `~/.claude/skills` and `~/.pi/agent/skills` |
 | `kempt` | kempt itself, so `kempt update` keeps it current |
 | `muster` | messages between agent sessions on this machine |
 | `galley` | review a document with your agent on a page |
@@ -41,9 +44,33 @@ and opens your agent on "Get me started with subaud."
 
 `kempt update` later pulls this repo and rolls every tool forward.
 
+## Packages to adopt
+
+Two packages are not in `suite`; a machine adopts them on top of it. Ask your
+agent, or run the command yourself:
+
+| Package | What | Adopt it |
+|---|---|---|
+| `pi` | the pi coding agent on your Claude Code login (the claude-bridge provider), its extensions, the worker and reviewer subagents, and a permission policy that asks before any command off its allow list | `kempt adopt pi` |
+| `neovim` | Neovim with a LazyVim config, ripgrep, fd and FiraCode Nerd Font; an existing `~/.config/nvim` is backed up first | `kempt adopt neovim` |
+
+On a Mac, `pi` needs Homebrew's `node@24` on PATH while it installs, and adds
+one line to `~/.zprofile` so later shells have it:
+
+```sh
+PATH="$(brew --prefix)/opt/node@24/bin:$PATH" kempt adopt pi
+```
+
 ## Checks
 
 CI checks that `kempt.toml` parses, matches kempt's schema
 (`.github/kempt.schema.json`, from `kempt schema`), and that the `suite`
-profile selects every package. On a machine with kempt, `kempt lint kempt.toml`
-and `kempt plan -manifest kempt.toml -profile suite` check it fully.
+profile selects every package but the two to adopt. It also fails when a
+tracked file holds a home path, an email address other than a noreply one, a
+12-digit number or a private key. Run both with `python .github/check.py`. On
+a machine with kempt, `kempt lint kempt.toml` and
+`kempt plan -manifest kempt.toml -profile suite` check it fully.
+
+The process skills are adapted in part from
+[obra/superpowers](https://github.com/obra/superpowers) (MIT); its license is
+in `LICENSES/superpowers`.
