@@ -105,7 +105,7 @@ Each check applies when you choose what to build or recommend.
 ## Subagents
 
 - Subagent briefs size proof to risk: for a small change, CI and the first real run are the test; give each a timebox, and have it report back when stuck.
-- A reviewer runs on a different model family from the implementer, so its blind spots differ.
+- A reviewer runs on a different model family from the implementer, so its blind spots differ; when that family can't run (signed out, out of usage), use the same family rather than block, and say so in the PR.
 
 ## Remembering things
 
