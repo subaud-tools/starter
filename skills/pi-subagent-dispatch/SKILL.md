@@ -22,8 +22,7 @@ Who reviews whom is in executing-plans; this is how to carry it out. The `worker
 Claude runs through the `claude-bridge` provider, on the Claude Code login. Don't use the
 direct `anthropic/*` provider for children unless you have signed in to it.
 
-If only one provider family is signed in, stop and ask the user: sign in to another provider
-(`/login`), or accept a same-family reviewer for this run. Never substitute one silently.
+When the other family can't review (only one provider is signed in, its login expired, its usage ran out), review on the same family without asking rather than blocking, and say so in the PR and your report. Tell the user once that signing in to another provider (`/login`) restores the other-family review.
 
 Dispatch with `isolated: false` (the default). Name the brief and report files in the prompt.
 
