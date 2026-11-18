@@ -16,7 +16,7 @@ A branch is disposable if either is true:
 - it is an ancestor of `origin/main` or `origin/dev`, or
 - its name is the head ref of a merged PR (`gh api 'repos/<owner>/<repo>/pulls?state=closed&per_page=100' --paginate`, entries with `merged_at` set) **and** its current tip is the PR's `head.sha`. A name match alone can be a reused name or carry commits added after the merge, so a branch whose tip differs is not disposable.
 
-Never delete a branch that has an open PR or is checked out in a worktree.
+Never delete a branch that has an open PR or is checked out in a worktree you haven't removed. Print the full list of worktrees and branches you will remove, with why each is disposable, before removing any; a worktree with uncommitted changes is never on it.
 
 ## Second pass on survivors
 

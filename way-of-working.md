@@ -89,7 +89,7 @@ Each check applies when you choose what to build or recommend.
 - Review in a separate worktree on its own review branch at the exact pushed commit; never reuse the implementer's active worktree.
 - After a base branch squash-merges, rebase a stacked branch with `git rebase --onto <new-base> <old-parent-tip>`.
 - Delete a PR's head branch only after the merge response says merged.
-- Remove an agent-created worktree only after proving its branch landed, it has no uncommitted work, and no live agent or session uses it; a merged PR alone is not enough.
+- Remove an agent-created worktree only after proving its branch landed, it has no uncommitted work, and no live agent or session uses it; a merged PR alone is not enough. The session that created a worktree knows no one else uses it, so it removes the worktree and its branch once the merge response says merged.
 - Scripts that delete worktrees, branches or files re-derive their targets at run time, pin them by path, refuse anything with uncommitted changes, and print the exact target plan before removal.
 
 ## Writing

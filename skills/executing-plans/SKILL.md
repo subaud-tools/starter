@@ -114,6 +114,8 @@ The review is finished when the approved behavior works and nothing regressed. A
 
 Push the branch and open a PR against its base with `gh pr create --body-file`, per the way of working's Git rules (in visual/UX rounds, wait for the user to say the round is done). Don't merge.
 
+Once the merge response says merged, remove this run's worktree and its local branch: `git -C <wt> status --porcelain` prints nothing, then `git worktree remove <wt>` and `git branch -d <branch>` (`-D` after a squash merge, since squashed commits never become ancestors). This session made the worktree, so it knows nothing else uses it; leaving it is how worktrees pile up. If the merge comes after this session ends, the cleaning-up-branches skill's sweep finds it.
+
 Your final message to the user carries, from the report: anything built beyond the plan's scope, every `Ruling:` line in order with its cost if wrong under "Rulings I made", and every follow-up under "Follow-ups". Both lists are exhaustive: your final message is the only place the decisions made on the user's behalf reach the user.
 
 ## Common Rationalizations
