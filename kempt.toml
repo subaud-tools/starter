@@ -467,7 +467,10 @@ needs = ["core", "way-of-working"]
   command-exists = "pi"
 
   [[packages.pi.verify]]
-  symlink-target = { link = "~/.pi/agent/agents", target = "agents" }
+  symlink-target = { link = "~/.pi/agent/agents/worker.md", target = "agents/worker.md" }
+
+  [[packages.pi.verify]]
+  symlink-target = { link = "~/.pi/agent/agents/reviewer.md", target = "agents/reviewer.md" }
 
 # ---------------------------------------------------------------------------
 # neovim: Neovim with a LazyVim config, and what LazyVim needs (ripgrep, fd,
