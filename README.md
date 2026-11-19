@@ -31,7 +31,7 @@ and opens your agent on "Get me started with subaud."
 
 | Package | What |
 |---|---|
-| `core` | tmux, and a check that Claude Code or pi is here |
+| `core` | tmux |
 | `terminal` | Ghostty and FiraCode Nerd Font on a Mac, and yazi: proj opens sessions in Ghostty and runs yazi in its sidebar |
 | `way-of-working` | the shared rules (`way-of-working.md`), loaded by Claude Code through one import line in `~/.claude/CLAUDE.md` and by pi as `~/.pi/agent/APPEND_SYSTEM.md`, and the process skills, each linked into `~/.claude/skills` and `~/.pi/agent/skills` |
 | `kempt` | kempt itself, so `kempt update` keeps it current |
