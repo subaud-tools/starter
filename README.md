@@ -73,8 +73,9 @@ The account page's line does the same with ` pi` on its end.
 The `pi` package's permission policy refuses agent reads of environment files
 (`.env`), `~/.ssh`, and the machine's token files: AWS credentials and sign-in
 caches, `~/.npmrc`, `~/.netrc`, the GitHub CLI's token file, pi's and Claude's
-credential files, the subaud token, hail's key store, the kube and docker
-configs, GnuPG and 1Password folders. The rules hold whether or not you turn
+credential files, the subaud token, each subaud tool's local page token,
+muster's hosted token, the kube and docker configs, GnuPG and 1Password
+folders. The rules hold whether or not you turn
 on yolo mode.
 
 They stop an accident, and a simple instruction planted in something the agent
