@@ -2,7 +2,7 @@
 
 A minimal [kempt](https://kempt.tools) config that sets up a machine for the
 [subaud](https://subaud.tools) suite: tmux, Ghostty and yazi, every suite
-tool (muster, galley, kempt, tackle, casebook, muda, diazo) with the skills,
+tool (muster, galley, kempt, tackle, casebook, muda, diazo, billet) with the skills,
 Claude Code plugin and pi channel each release ships, and the way of working:
 shared rules and process skills for your agent. No shell config and no
 personal settings; every file it links over yours is backed up first.
@@ -41,6 +41,7 @@ and opens your agent on "Get me started with subaud."
 | `casebook` | triage your repos, branches and PRs with your agent |
 | `muda` | find and fix delivery waste in your pipelines |
 | `diazo` | plan a change with your agent on a shared page |
+| `billet` | your project workspaces in your own AWS account |
 
 `kempt update` later pulls this repo and rolls every tool forward.
 
