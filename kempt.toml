@@ -386,7 +386,7 @@ needs = ["core", "way-of-working"]
     # channels.tools.
     "npm:@subaud-tools/pi-claude-bridge@0.13.0-subaud-tools.1",
     # Provider usage meter; keep it right after the bridge.
-    "npm:@subaud-tools/pi-usage@0.14.2-subaud-tools.1",
+    "npm:@subaud-tools/pi-usage@0.14.4-subaud-tools.1",
     # The permission system, installed under the upstream name through an npm
     # alias so the upstream package can never also load. Bump the version at
     # the end of the string.
@@ -417,7 +417,7 @@ needs = ["core", "way-of-working"]
   [[packages.pi.json-merge]]
   file = "~/.pi/agent/settings.json"
   arrays = "replace"
-  merge = { defaultProvider = "claude-bridge", defaultThinkingLevel = "medium", hideThinkingBlock = true, theme = "dark", compaction = { enabled = true, reserveTokens = 16384, keepRecentTokens = 24000 }, packages = [ "npm:@subaud-tools/pi-claude-bridge@0.13.0-subaud-tools.1", "npm:@subaud-tools/pi-usage@0.14.2-subaud-tools.1", "npm:@gotgenes/pi-permission-system@npm:@subaud-tools/pi-permission-system@42.2.0-subaud-tools.1", "npm:@tintinweb/pi-subagents", "npm:@bitcraft-apps/pi-web-tools", "npm:pi-quiet@0.2.1", "npm:@hank-warren/pi-plan-mode", "npm:@subaud-tools/pi-schedule@0.6.1-subaud-tools.2", "npm:channels.tools", "npm:pi-mcp-adapter", "npm:pi-tmux-bridge@0.1.5", "npm:pi-wakeup@0.3.0", "npm:pi-creel", "npm:pi-bang", "npm:pi-copy", "npm:pi-auto-reload@0.2.1" ] }
+  merge = { defaultProvider = "claude-bridge", defaultThinkingLevel = "medium", hideThinkingBlock = true, theme = "dark", compaction = { enabled = true, reserveTokens = 16384, keepRecentTokens = 24000 }, packages = [ "npm:@subaud-tools/pi-claude-bridge@0.13.0-subaud-tools.1", "npm:@subaud-tools/pi-usage@0.14.4-subaud-tools.1", "npm:@gotgenes/pi-permission-system@npm:@subaud-tools/pi-permission-system@42.2.0-subaud-tools.1", "npm:@tintinweb/pi-subagents", "npm:@bitcraft-apps/pi-web-tools", "npm:pi-quiet@0.2.1", "npm:@hank-warren/pi-plan-mode", "npm:@subaud-tools/pi-schedule@0.6.1-subaud-tools.2", "npm:channels.tools", "npm:pi-mcp-adapter", "npm:pi-tmux-bridge@0.1.5", "npm:pi-wakeup@0.3.0", "npm:pi-creel", "npm:pi-bang", "npm:pi-copy", "npm:pi-auto-reload@0.2.1" ] }
 
   # The permission policy: yolo mode off, so a tool call off the allow list
   # asks first, and the denies (environment files, ~/.ssh, token files, git
