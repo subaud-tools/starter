@@ -347,6 +347,19 @@ needs = ["core"]
   [[packages.diazo.verify]]
   command-exists = "diazo"
 
+[packages.billet]
+description = "billet: your project workspaces in your own AWS account (billet.tools)"
+needs = ["core"]
+
+  [[packages.billet.download]]
+  site = "billet.tools"
+  tool = "billet"
+  bin = "billet"
+  setup = true
+
+  [[packages.billet.verify]]
+  command-exists = "billet"
+
 # ---------------------------------------------------------------------------
 # pi: the pi coding agent on the Claude Code login (the claude-bridge
 # provider), with its extensions, the worker and reviewer subagents, and a
@@ -499,4 +512,4 @@ needs = ["core"]
 # ---------------------------------------------------------------------------
 [profiles.suite]
 description = "tmux, Ghostty and yazi, the whole subaud suite and the way of working"
-packages = ["core", "terminal", "way-of-working", "kempt", "muster", "galley", "tackle", "casebook", "muda", "diazo"]
+packages = ["core", "terminal", "way-of-working", "kempt", "muster", "galley", "tackle", "casebook", "muda", "diazo", "billet"]
