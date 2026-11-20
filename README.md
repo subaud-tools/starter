@@ -81,3 +81,5 @@ a machine with kempt, `kempt lint kempt.toml` and
 The process skills are adapted in part from
 [obra/superpowers](https://github.com/obra/superpowers) (MIT); its license is
 in `LICENSES/superpowers`.
+
+The starter itself is MIT licensed; see `LICENSE`.
