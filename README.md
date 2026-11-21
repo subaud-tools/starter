@@ -83,7 +83,8 @@ They stop an accident, and a simple instruction planted in something the agent
 reads. They are not a sandbox: a path hidden inside a script or a wildcard is
 not caught, and a program such as `gh`, `aws` or `git push` still uses its own
 token when the agent runs it. Neighbouring files that hold no secret, such as
-`~/.aws/config` and pi's `settings.json`, stay readable.
+`~/.aws/config`, pi's `settings.json` and the public halves of your SSH keys
+(`~/.ssh/*.pub`), stay readable.
 
 ## Checks
 
