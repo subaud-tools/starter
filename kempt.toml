@@ -292,6 +292,7 @@ needs = ["core"]
   product = "tackle"
   tool = "creel"
   bin = "creel"
+  setup = true
 
   [[packages.tackle.download]]
   site = "tackle.tools"
