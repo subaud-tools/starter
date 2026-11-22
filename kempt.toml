@@ -71,6 +71,8 @@ needs = ["core"]
 # ~/.pi/agent/APPEND_SYSTEM.md (your ~/.pi/agent/AGENTS.md is never touched).
 # Each skill is linked as its own folder, since tool releases write their own
 # skills beside them; a folder already at a skill's path is backed up first.
+# Claude Code also gets the worker and reviewer subagents and the read denies
+# here (the pi package gives pi its own).
 # ---------------------------------------------------------------------------
 [packages.way-of-working]
 description = "The shared rules and the process skills, for Claude Code and pi"
@@ -170,11 +172,7 @@ needs = ["core"]
   to = "~/.pi/agent/skills/running-long-jobs"
   backup = true
 
-  [[packages.way-of-working.symlink]]
-  from = "skills/pi-subagent-dispatch"
-  to = "~/.claude/skills/pi-subagent-dispatch"
-  backup = true
-
+  # pi only: the skill says how a pi session picks a subagent's model.
   [[packages.way-of-working.symlink]]
   from = "skills/pi-subagent-dispatch"
   to = "~/.pi/agent/skills/pi-subagent-dispatch"
@@ -199,6 +197,32 @@ needs = ["core"]
   from = "skills/driving-chrome"
   to = "~/.pi/agent/skills/driving-chrome"
   backup = true
+
+  # The worker and reviewer subagents for Claude Code, from the files pi
+  # links (the pi package). An agent file of yours at either path is backed
+  # up first.
+  [[packages.way-of-working.symlink]]
+  from = "agents/worker.md"
+  to = "~/.claude/agents/worker.md"
+  backup = true
+
+  [[packages.way-of-working.symlink]]
+  from = "agents/reviewer.md"
+  to = "~/.claude/agents/reviewer.md"
+  backup = true
+
+  # Claude Code's read denies: the paths pi's permission policy denies (the
+  # pi package), as Claude Code spells them. .github/check.py derives this
+  # list from that policy and fails when the two differ, so change the policy
+  # and this list together. Appended: rules already in your settings.json
+  # stay, and so does every other key. Two differences from pi: the public
+  # halves of SSH keys (~/.ssh/*.pub) are denied with the rest of ~/.ssh,
+  # since a `!` carve-out reaches only rules relative to the current
+  # directory; and .env.* files are denied under the directory Claude Code
+  # runs in rather than everywhere, so that .env.example can stay readable.
+  [[packages.way-of-working.json-merge]]
+  file = "~/.claude/settings.json"
+  merge = { permissions = { deny = [ "Read(//**/*.env)", "Read(*.env.*)", "Read(!*.env.example)", "Read(~/.ssh/**)", "Read(~/.aws/credentials)", "Read(~/.aws/sso/**)", "Read(~/.aws/cli/**)", "Read(~/.npmrc)", "Read(~/.netrc)", "Read(~/.git-credentials)", "Read(~/.config/gh/hosts.yml)", "Read(~/.pi/agent/auth.json)", "Read(~/.pi/agent/mcp-oauth-encrypted/**)", "Read(~/.pi/agent/claude-bridge/accounts/*/.credentials.json)", "Read(~/.claude/.credentials.json)", "Read(~/.codex/auth.json)", "Read(~/.config/subaud/token)", "Read(~/.local/state/*/token)", "Read(~/.local/share/muster/remote-token)", "Read(~/.config/pi-mcp/oauth.key)", "Read(~/.kube/config)", "Read(~/.docker/config.json)", "Read(~/.gnupg/**)", "Read(~/.config/op/**)" ] } }
 
   [[packages.way-of-working.verify]]
   symlink-target = { link = "~/.pi/agent/APPEND_SYSTEM.md", target = "way-of-working.md" }

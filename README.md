@@ -33,7 +33,7 @@ and opens your agent on "Get me started with subaud."
 |---|---|
 | `core` | tmux |
 | `terminal` | Ghostty and FiraCode Nerd Font on a Mac, and yazi: proj opens sessions in Ghostty and runs yazi in its sidebar |
-| `way-of-working` | the shared rules (`way-of-working.md`), loaded by Claude Code through one import line in `~/.claude/CLAUDE.md` and by pi as `~/.pi/agent/APPEND_SYSTEM.md`, and the process skills, each linked into `~/.claude/skills` and `~/.pi/agent/skills` |
+| `way-of-working` | the shared rules (`way-of-working.md`), loaded by Claude Code through one import line in `~/.claude/CLAUDE.md` and by pi as `~/.pi/agent/APPEND_SYSTEM.md`, and the process skills, each linked into `~/.claude/skills` and `~/.pi/agent/skills`; for Claude Code, also the worker and reviewer subagents (`~/.claude/agents`) and the read denies below, added to `~/.claude/settings.json` |
 | `kempt` | kempt itself, so `kempt update` keeps it current |
 | `muster` | messages between agent sessions on this machine |
 | `galley` | review a document with your agent on a page |
@@ -86,11 +86,18 @@ token when the agent runs it. Neighbouring files that hold no secret, such as
 `~/.aws/config`, pi's `settings.json` and the public halves of your SSH keys
 (`~/.ssh/*.pub`), stay readable.
 
+Claude Code is denied the same files. The `way-of-working` package adds one `Read` deny rule for each of those paths to `permissions.deny` in `~/.claude/settings.json`. The rules are added to the list: rules you already have there stay, and so do your other settings. A deny rule holds in every permission mode, and an allow rule cannot override it.
+
+In Claude Code, a rule stops the Read, Edit, Write, Grep and Glob tools on a matching path, and a shell command that names the file to a command Claude Code recognizes, such as `cat`, `head`, `tail` or `sed`. A rule does not stop a command that reads files without naming them, such as `grep -r` run in the folder that holds the file, or a script that opens the file itself. As with pi, a program such as `gh` or `aws` still uses its own token.
+
+Three things differ from pi. Claude Code denies all of `~/.ssh`, the public halves of your keys included, because its rules cannot make an exception inside a denied folder under your home directory. Files named `.env.local`, `.env.production` and the like are denied in the folder Claude Code runs in and the folders under it, not everywhere on the machine, so that `.env.example` can stay readable; files whose names end in `.env` are denied everywhere. And Claude Code gives the agent no reason with a refusal, where pi's policy tells it what to do instead.
+
 ## Checks
 
 CI checks that `kempt.toml` parses, matches kempt's schema
 (`.github/kempt.schema.json`, from `kempt schema`), and that the `suite`
-profile selects every package but the two to adopt. It also fails when a
+profile selects every package but the two to adopt, and that the deny list
+for Claude Code is pi's policy, path for path. It also fails when a
 tracked file holds a home path, an email address other than a noreply one, a
 12-digit number or a private key. Run both with `python .github/check.py`. On
 a machine with kempt, `kempt lint kempt.toml` and
