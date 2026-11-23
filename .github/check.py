@@ -50,7 +50,8 @@ def claude_denies(paths):
     then it is denied under the current directory, the only place Claude
     Code's `!` carve-out reaches, and the allowed names are carved out after
     it."""
-    denied = [p for p, rule in paths.items() if isinstance(rule, dict) and rule.get("action") == "deny"]
+    denied = [p for p, rule in paths.items()
+              if rule == "deny" or isinstance(rule, dict) and rule.get("action") == "deny"]
     allowed = [p for p, rule in paths.items() if rule == "allow" and p != "*"]
     rules, carved = [], set()
     for path in denied:

@@ -19,7 +19,7 @@ Stop and bring it to the user for: deleting something that exists only on this m
 
 ## Choose who implements
 
-- **One `worker` subagent for the whole plan (default).** The main session coordinates: it holds the plan, the diazo page and the conversation with the user, and runs no task commands itself beyond small reads and each task's check commands, so a long run rarely compacts. The worker returns a short result: what changed, and each check with its exit code. Pick the model with the `pi-subagent-dispatch` skill (`worker` inherits the session model; routine work may run on Sonnet on the same provider).
+- **One `worker` subagent for the whole plan (default).** The main session coordinates: it holds the plan, the diazo page and the conversation with the user, and runs no task commands itself beyond small reads and each task's check commands, so a long run rarely compacts. The worker returns a short result: what changed, and each check with its exit code. Where the agent is pi, pick the model with the `pi-subagent-dispatch` skill (`worker` inherits the session model; routine work may run on Sonnet on the same provider).
 - **Inline, in this session,** only when the plan is a single small task.
 - **Large-plan mode: a fresh `worker` per task,** when the plan has many independent tasks and one worker would carry too much context through them. Each task starts clean; the main session runs each task's own checks between tasks.
 
@@ -100,7 +100,7 @@ Build the package in the run directory:
 { git -C <wt> log --oneline "$BASE"..HEAD; git -C <wt> diff "$BASE"...HEAD; } > <run-dir>/review-package.diff
 ```
 
-Both modes end here. Dispatch a `reviewer` from the other provider family from the implementer (the `pi-subagent-dispatch` skill names the models; when the other family can't review, a same-family reviewer runs instead, noted in the PR and the report). Its three files are the plan (as the brief), the report, and the package. In the prompt, add the spec path, the plan's Review Focus section verbatim (the reviewer checks each line deliberately), and a pointer to the report's `Ruling:` lines so it can weigh the calls made. This is the one fresh-context review the run buys; don't skip it or replace it with your own read of the diff.
+Both modes end here. Dispatch a `reviewer` from the other provider family from the implementer (where the agent is pi, the `pi-subagent-dispatch` skill names the models; when the other family can't review, a same-family reviewer runs instead, noted in the PR and the report). Its three files are the plan (as the brief), the report, and the package. In the prompt, add the spec path, the plan's Review Focus section verbatim (the reviewer checks each line deliberately), and a pointer to the report's `Ruling:` lines so it can weigh the calls made. This is the one fresh-context review the run buys; don't skip it or replace it with your own read of the diff.
 
 Handle the findings with the [receiving-code-review](../receiving-code-review/SKILL.md) skill: verify each against the code before acting, then sort it. The reviewer's severity labels are advice; grade a finding by what a reasonable person using this software gets if it ships. Its "Cannot verify from diff" list is yours too: each line becomes a ruling or a finding.
 
