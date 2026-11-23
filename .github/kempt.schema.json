@@ -18,6 +18,10 @@
           "type": "string",
           "enum": ["user", "project"],
           "description": "Marks this file as a layer applied on top of a base manifest (kempt layer add). user: configures the user's machine; project: configures one checkout, file primitives only, targets inside it."
+        },
+        "on": {
+          "type": "string",
+          "description": "The git URL of the base manifest this layer sits on (layer files only). When a machine's base becomes a layer with on, kempt update makes on the base and keeps the old base as a layer."
         }
       }
     },
@@ -135,6 +139,7 @@
         "apt": { "type": "array", "items": { "type": "string" } },
         "npm": { "type": "array", "items": { "type": "string" } },
         "pi": { "type": "array", "items": { "type": "string" } },
+        "node": { "type": "string", "pattern": "^[0-9]+$" },
         "only": { "$ref": "#/$defs/only" }
       }
     },
