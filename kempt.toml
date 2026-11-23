@@ -49,6 +49,7 @@ needs = ["core"]
   brew.casks = ["ghostty", "font-fira-code-nerd-font"]
   only = { os = "darwin" }
 
+  # Ghostty is a Mac cask here, so its config is linked on a Mac only.
   [[packages.terminal.symlink]]
   from = "config/ghostty/config"
   to = "~/.config/ghostty/config"
@@ -60,6 +61,7 @@ needs = ["core"]
   to = "~/.config/yazi"
   backup = true
 
+  # yazi is not installed on Linux, so there is nothing to verify there.
   [[packages.terminal.verify]]
   command-exists = "yazi"
   only = { os = "darwin" }
