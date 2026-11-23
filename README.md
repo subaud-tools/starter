@@ -55,11 +55,14 @@ agent, or run the command yourself:
 | `pi` | the pi coding agent on your Claude Code login (the claude-bridge provider), its extensions, the worker and reviewer subagents, and a permission policy that asks before any command off its allow list | `kempt adopt pi`, then apply (below) |
 | `neovim` | Neovim with a LazyVim config, ripgrep, fd and FiraCode Nerd Font; an existing `~/.config/nvim` is backed up first | `kempt adopt neovim && kempt apply -yes` |
 
-`kempt adopt` only saves the choice; `kempt apply` installs it. On a Mac, `pi`
-installs with npm from Homebrew's `node@24`, which Homebrew leaves off PATH;
-kempt 0.23.0 and later put it on PATH for its own run, so one apply installs
-`node@24`, pi and pi's extensions (the package also adds one line to
-`~/.zprofile` so later shells have it):
+`kempt adopt` only saves the choice; `kempt apply` installs it. `pi` installs
+with npm on Node 24. On a Mac Node comes from Homebrew's `node@24`, which
+Homebrew leaves off PATH; kempt 0.23.0 and later put it on PATH for its own
+run, so one apply installs `node@24`, pi and pi's extensions (the package also
+adds one line to `~/.zprofile` so later shells have it). On Linux kempt
+0.121.0 and later install Node 24 into `~/.local` themselves; kempt checks
+every step before it applies any, so run apply again until it has nothing
+left to do (three applies cover Node, pi and pi's extensions):
 
 ```sh
 kempt adopt pi

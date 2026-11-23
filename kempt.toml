@@ -395,13 +395,16 @@ needs = ["core"]
 description = "pi coding agent on the claude-bridge provider, with its extensions"
 needs = ["core", "way-of-working"]
 
-  # node@24: pi runs on the Node LTS line, not Homebrew's `node`, which tracks
-  # the newest major. ddgr, pandoc and trafilatura back pi-web-tools' search
-  # and fetch. Linux: trafilatura is not in Ubuntu's apt, and Node 24 has to
-  # come from elsewhere (Ubuntu's nodejs is older).
+  # Node 24: pi runs on the Node LTS line. On a Mac brew wins: Homebrew's
+  # node@24, not its `node`, which tracks the newest major. On Linux apt
+  # installs ddgr and pandoc, and kempt's node source installs Node 24 into
+  # ~/.local before the npm step (Ubuntu's nodejs is older). ddgr, pandoc and
+  # trafilatura back pi-web-tools' search and fetch; trafilatura stays Mac
+  # only, since Ubuntu's apt has none and pi's web fetch works without it.
   [[packages.pi.install]]
   brew.formulas = ["ddgr", "pandoc", "trafilatura", "node@24"]
   apt = ["ddgr", "pandoc"]
+  node = "24"
 
   # node@24 is keg-only: Homebrew leaves it off PATH. This puts it on PATH for
   # login shells, so npm, pi and the npm step below find it.
