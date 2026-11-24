@@ -33,7 +33,7 @@ description = "tmux"
   command-exists = "tmux"
 
 # ---------------------------------------------------------------------------
-# terminal: what proj needs around it. proj opens sessions in Ghostty and runs
+# terminal: what cast needs around it. cast opens sessions in Ghostty and runs
 # yazi in its sidebar. FiraCode Nerd Font is the font the Ghostty config names
 # and carries the icons yazi draws. A config already at either path is backed
 # up before the link replaces it.
@@ -273,14 +273,14 @@ needs = ["core"]
   command-exists = "galley"
 
 [packages.tackle]
-description = "tackle: proj, scratch, creel, sift, imprint and cull (tackle.tools)"
+description = "tackle: cast, scratch, creel, sift, imprint and cull (tackle.tools)"
 needs = ["core"]
 
   [[packages.tackle.download]]
   site = "tackle.tools"
   product = "tackle"
-  tool = "proj"
-  bin = "proj"
+  tool = "cast"
+  bin = "cast"
   setup = true
 
   [[packages.tackle.download]]
@@ -318,7 +318,7 @@ needs = ["core"]
   setup = true
 
   [[packages.tackle.verify]]
-  command-exists = "proj"
+  command-exists = "cast"
 
   [[packages.tackle.verify]]
   command-exists = "scratch"
