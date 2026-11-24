@@ -32,12 +32,12 @@ and opens your agent on "Get me started with subaud."
 | Package | What |
 |---|---|
 | `core` | tmux |
-| `terminal` | Ghostty and FiraCode Nerd Font on a Mac, and yazi: proj opens sessions in Ghostty and runs yazi in its sidebar |
+| `terminal` | Ghostty and FiraCode Nerd Font on a Mac, and yazi: cast opens sessions in Ghostty and runs yazi in its sidebar |
 | `way-of-working` | the shared rules (`way-of-working.md`), loaded by Claude Code through one import line in `~/.claude/CLAUDE.md` and by pi as `~/.pi/agent/APPEND_SYSTEM.md`, and the process skills, each linked into `~/.claude/skills` and `~/.pi/agent/skills`; for Claude Code, also the worker and reviewer subagents (`~/.claude/agents`) and the read denies below, added to `~/.claude/settings.json` |
 | `kempt` | kempt itself, so `kempt update` keeps it current |
 | `muster` | messages between agent sessions on this machine |
 | `galley` | review a document with your agent on a page |
-| `tackle` | proj, scratch, creel, sift, imprint and cull |
+| `tackle` | cast, scratch, creel, sift, imprint and cull |
 | `casebook` | triage your repos, branches and PRs with your agent |
 | `muda` | find and fix delivery waste in your pipelines |
 | `diazo` | plan a change with your agent on a shared page |

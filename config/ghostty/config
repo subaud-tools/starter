@@ -4,7 +4,7 @@
 # Fonts
 # ===================
 # FiraCode Nerd Font: free, and its Nerd Font glyphs cover the icons yazi and
-# proj draw. The terminal package installs it.
+# cast draw. The terminal package installs it.
 font-family = FiraCode Nerd Font
 font-size = 13
 
@@ -58,9 +58,9 @@ split-inherit-working-directory = true
 # where a non-inheriting window lands
 working-directory = home
 window-inherit-font-size = true
-# proj owns restore after a reboot (sessions + saved window/tab layout).
+# cast owns restore after a reboot (sessions + saved window/tab layout).
 # Ghostty's own restore only brings back empty shells in old dirs, which then
-# auto-join to the proj picker — a second, wrong set of windows.
+# auto-join to the cast picker — a second, wrong set of windows.
 window-save-state = never
 # Confirm quit only if there's an unsaved/running process
 quit-after-last-window-closed = false
